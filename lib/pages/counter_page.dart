@@ -11,21 +11,20 @@ class CounterPage extends StatefulWidget {
 class _CounterPageState extends State<CounterPage> {
   @override
   Widget build(BuildContext context) {
+    final provider = CounterProvider.of(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text("Exemplo Contador"),
       ),
       body: Column(
         children: [
-          Text((CounterProvider.of(context)?.state.value as int).toString() ??
-              '0'),
+          Text((provider?.state.value as int).toString() ?? '0'),
           IconButton(
             onPressed: () {
               setState(() {
-                CounterProvider.of(context)?.state.inc();
+                provider?.state.inc();
               });
-              print(
-                  (CounterProvider.of(context)?.state.value as int).toString());
+              print((provider?.state.value as int).toString());
             },
             icon: Icon(
               Icons.add,
@@ -35,10 +34,9 @@ class _CounterPageState extends State<CounterPage> {
           IconButton(
             onPressed: () {
               setState(() {
-                CounterProvider.of(context)?.state.dec();
+                provider?.state.dec();
               });
-              print(
-                  (CounterProvider.of(context)?.state.value as int).toString());
+              print((provider?.state.value as int).toString());
             },
             icon: Icon(
               Icons.remove,
