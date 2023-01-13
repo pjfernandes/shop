@@ -4,7 +4,6 @@ import '../models/product.dart';
 import 'package:provider/provider.dart';
 
 class ProductItem extends StatelessWidget {
-  ProductItem();
   @override
   Widget build(BuildContext context) {
     final product = Provider.of<Product>(context);
@@ -27,13 +26,15 @@ class ProductItem extends StatelessWidget {
         footer: GridTileBar(
           backgroundColor: Colors.black87,
           leading: IconButton(
-            onPressed: () {},
+            onPressed: () {
+              product.toggleFavorite();
+            },
             icon: Icon(
-              Icons.favorite,
+              product.isFavorite ? Icons.favorite : Icons.favorite_border,
               color: Colors.red,
             ),
           ),
-          title: Text(product.title),
+          title: Text(product.name),
           trailing: IconButton(
             onPressed: () {},
             icon: Icon(
