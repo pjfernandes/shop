@@ -11,7 +11,7 @@ class Cart with ChangeNotifier {
     return {...items};
   }
 
-  int get itemCount => _items.length;
+  int get itemsCount => _items.length;
 
   double get totalAmount {
     double total = 0.0;
@@ -29,7 +29,7 @@ class Cart with ChangeNotifier {
           id: existingItem.id,
           productId: existingItem.productId,
           name: existingItem.name,
-          quantity: existingItem.quantity,
+          quantity: existingItem.quantity + 1,
           price: existingItem.price,
         ),
       );
