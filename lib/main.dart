@@ -3,10 +3,11 @@ import 'package:provider/provider.dart';
 
 import 'package:shop/models/product_list.dart';
 import 'models/cart.dart';
-//import 'package:shop/pages/counter_page.dart';
+
 import 'package:shop/pages/product_detail_page.dart';
-//import 'package:shop/providers/counter.dart';
 import 'pages/products_overview_page.dart';
+import 'pages/cart_page.dart';
+
 import 'utils/app_routes.dart';
 
 void main() {
@@ -36,6 +37,7 @@ class MyApp extends StatelessWidget {
         home: ProductsOverviewPage(),
         routes: {
           AppRoutes.PRODUCT_DETAILS: (ctx) => ProductDetailPage(),
+          AppRoutes.CART: (ctx) => CartPage(),
         },
         debugShowCheckedModeBanner: false,
       ),
