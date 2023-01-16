@@ -11,12 +11,18 @@ class CartItemWidget extends StatelessWidget {
       key: ValueKey(cartItem.id),
       direction: DismissDirection.endToStart,
       background: Container(
-          color: Theme.of(context).errorColor,
-          child: Icon(Icons.delete),
-          alignment: Alignment.centerRight,
-          padding: EdgeInsets.only(right: 20)),
+        color: Theme.of(context).errorColor,
+        child: Icon(
+          Icons.delete,
+          color: Colors.white,
+          size: 40,
+        ),
+        alignment: Alignment.centerRight,
+        padding: EdgeInsets.only(right: 20),
+        margin: EdgeInsets.symmetric(horizontal: 15, vertical: 4),
+      ),
       child: Card(
-        margin: EdgeInsets.symmetric(horizontal: 15, vertical: 25),
+        margin: EdgeInsets.symmetric(horizontal: 15, vertical: 4),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: ListTile(

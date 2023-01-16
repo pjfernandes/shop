@@ -56,7 +56,7 @@ class CartPage extends StatelessWidget {
           ),
           Expanded(
             child: ListView.builder(
-              itemCount: items.length,
+              itemCount: 4,
               itemBuilder: (context, index) =>
                   CartItemWidget(cartItem: items[index]),
             ),
