@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop/models/order_list.dart';
 
 import '../components/cart_item.dart';
 
@@ -55,7 +56,11 @@ class CartPage extends StatelessWidget {
                           color: Theme.of(context).primaryColor,
                         ),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Provider.of<OrderList>(context, listen: false)
+                            .addOrder(cart);
+                        cart.clear();
+                      },
                     )
                   ],
                 ),
