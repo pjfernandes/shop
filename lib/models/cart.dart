@@ -50,7 +50,7 @@ class Cart with ChangeNotifier {
     notifyListeners();
   }
 
-  void removeId(String productId) {
+  void removeItem(String productId) {
     _items.remove(productId);
     notifyListeners(); //sempre que houve mudança, eu chamo o notifyListeners()
   }
