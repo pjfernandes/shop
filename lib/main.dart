@@ -8,6 +8,7 @@ import 'models/cart.dart';
 import 'package:shop/pages/product_detail_page.dart';
 import 'pages/products_overview_page.dart';
 import 'pages/cart_page.dart';
+import 'pages/orders_page.dart';
 
 import 'utils/app_routes.dart';
 
@@ -40,8 +41,10 @@ class MyApp extends StatelessWidget {
             fontFamily: 'Lato'),
         home: ProductsOverviewPage(),
         routes: {
+          AppRoutes.HOME: (ctx) => ProductsOverviewPage(),
           AppRoutes.PRODUCT_DETAILS: (ctx) => ProductDetailPage(),
           AppRoutes.CART: (ctx) => CartPage(),
+          AppRoutes.ORDERS: (ctx) => OrdersPage(),
         },
         debugShowCheckedModeBanner: false,
       ),
