@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
             colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.purple)
                 .copyWith(secondary: Colors.deepOrange),
             fontFamily: 'Lato'),
-        home: ProductsOverviewPage(),
+        //home: ProductsOverviewPage(),
         routes: {
           AppRoutes.HOME: (ctx) => ProductsOverviewPage(),
           AppRoutes.PRODUCT_DETAILS: (ctx) => ProductDetailPage(),
