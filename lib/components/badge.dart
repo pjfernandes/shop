@@ -8,7 +8,7 @@ class Badge extends StatelessWidget {
   const Badge({
     required this.child,
     required this.value,
-    required this.color,
+    this.color,
   });
 
   @override
