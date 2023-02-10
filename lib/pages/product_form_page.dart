@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../models/product_list.dart';
+import '../models/product.dart';
 
 class ProductFormPage extends StatefulWidget {
   const ProductFormPage({super.key});
@@ -25,6 +26,26 @@ class _ProductFormPageState extends State<ProductFormPage> {
   void initState() {
     super.initState();
     imageUrlFocus.addListener(updateImage);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    if (formData.isEmpty) {
+      final arg = ModalRoute.of(context)?.settings.arguments;
+
+      if (arg != null) {
+        final product = arg as Product;
+        formData['id'] = product.id;
+        formData['name'] = product.name;
+        formData['price'] = product.price;
+        formData['description'] = product.description;
+        formData['imageUrl'] = product.imageUrl;
+
+        imageUrlController.text = product.imageUrl;
+      }
+    }
   }
 
   @override
@@ -61,7 +82,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
     Provider.of<ProductList>(
       context,
       listen: false,
-    ).addProductFromData(formData);
+    ).saveProduct(formData);
 
     Navigator.of(context).pop();
   }
@@ -70,14 +91,20 @@ class _ProductFormPageState extends State<ProductFormPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Formulário de produto"),
-        actions: [IconButton(onPressed: submitForm, icon: Icon(Icons.save))],
+        title: const Text("Formulário de produto"),
+        actions: [
+          IconButton(
+            onPressed: submitForm,
+            icon: Icon(Icons.save),
+          ),
+        ],
       ),
       body: Form(
         key: formKey,
         child: ListView(
           children: [
             TextFormField(
+              initialValue: formData['name']?.toString(),
               decoration: InputDecoration(labelText: 'Nome'),
               textInputAction: TextInputAction.next,
               onFieldSubmitted: (_) {
@@ -99,6 +126,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
               },
             ),
             TextFormField(
+              initialValue: formData['price']?.toString(),
               decoration: InputDecoration(labelText: 'Preço'),
               textInputAction: TextInputAction.next,
               focusNode: priceFocus,
@@ -119,6 +147,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
               },
             ),
             TextFormField(
+              initialValue: formData['description']?.toString(),
               decoration: InputDecoration(labelText: 'Descrição'),
               textInputAction: TextInputAction.next,
               focusNode: descriptionFocus,
@@ -141,6 +170,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
               },
             ),
             Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Expanded(
                   child: TextFormField(
@@ -154,8 +184,9 @@ class _ProductFormPageState extends State<ProductFormPage> {
                         formData['imageUrl'] = imageUrl ?? "",
                     validator: (_imageUrl) {
                       final imageUrl = _imageUrl ?? '';
+
                       if (!isValidImageUrl(imageUrl)) {
-                        return "Informe URL válida";
+                        return "URL inválida";
                       }
 
                       return null;

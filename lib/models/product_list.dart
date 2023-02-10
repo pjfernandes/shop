@@ -17,15 +17,31 @@ class ProductList with ChangeNotifier {
     return items.length;
   }
 
-  void addProductFromData(Map<String, Object> data) {
-    final newProduct = Product(
-      id: Random().nextDouble().toString(),
+  void saveProduct(Map<String, Object> data) {
+    bool hasId = data['id'] != null;
+
+    final product = Product(
+      id: hasId ? data['id'] as String : Random().nextDouble().toString(),
       name: data['name'] as String,
       description: data['description'] as String,
       price: data['price'] as double,
       imageUrl: data['imageUrl'] as String,
     );
-    addProduct(newProduct);
+
+    if (hasId) {
+      updateProduct(product);
+    } else {
+      addProduct(product);
+    }
+  }
+
+  void updateProduct(Product product) {
+    int index = _items.indexWhere((p) => p.id == product.id);
+
+    if (index >= 0) {
+      _items[index] = product;
+      notifyListeners();
+    }
   }
 
   void addProduct(Product product) {
@@ -33,6 +49,11 @@ class ProductList with ChangeNotifier {
     notifyListeners(); //notifica os interessados ao atualizar a
     //lista de produtos.
     // Para que a tela atualize a lista de productos
+  }
+
+  void removeProduct(Product product) {
+    _items.removeWhere((p) => product.id == p.id);
+    notifyListeners();
   }
 }
 
