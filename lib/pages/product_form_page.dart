@@ -1,4 +1,7 @@
+import 'package:provider/provider.dart';
+
 import '../models/product.dart';
+import '../models/product_list.dart';
 
 import 'package:flutter/material.dart';
 import 'dart:math';
@@ -57,12 +60,10 @@ class _ProductFormPageState extends State<ProductFormPage> {
     formKey.currentState?.save(); //faz a chamada dos campos onSaved
     //print(formData.values);
 
-    final Product newProduct = Product(
-        id: Random().nextDouble().toString(),
-        name: formData['name'].toString(),
-        description: formData['description'].toString(),
-        price: formData['price'] as double,
-        imageUrl: formData['imageUrl'].toString());
+    Provider.of<ProductList>(context, listen: false)
+        .addProductFromData(formData);
+
+    Navigator.of(context).pop();
   }
 
   @override

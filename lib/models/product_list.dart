@@ -55,6 +55,18 @@ class ProductList with ChangeNotifier {
     _items.removeWhere((p) => product.id == p.id);
     notifyListeners();
   }
+
+  void addProductFromData(Map<String, Object> formData) {
+    final Product newProduct = Product(
+        id: Random().nextDouble().toString(),
+        name: formData['name'].toString(),
+        description: formData['description'].toString(),
+        price: formData['price'] as double,
+        imageUrl: formData['imageUrl'].toString());
+
+    addProduct(newProduct);
+    notifyListeners();
+  }
 }
 
 // bool _showFavoriteOnly = false;
