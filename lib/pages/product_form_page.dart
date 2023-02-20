@@ -39,14 +39,15 @@ class _ProductFormPageState extends State<ProductFormPage> {
   }
 
   void submitForm() {
-    formKey.currentState?.save();
-    Product newProduct = Product(
-      id: Random().nextDouble().toString(),
-      name: formData['name'] as String,
-      description: formData['description'] as String,
-      price: formData['price'] as double,
-      imageUrl: formData['imageUrl'] as String,
-    );
+    formKey.currentState?.save(); //faz a chamada dos campos onSaved
+    //print(formData.values);
+
+    final Product newProduct = Product(
+        id: Random().nextDouble().toString(),
+        name: formData['name'].toString(),
+        description: formData['description'].toString(),
+        price: formData['price'] as double,
+        imageUrl: formData['imageUrl'].toString());
   }
 
   @override
@@ -111,25 +112,26 @@ class _ProductFormPageState extends State<ProductFormPage> {
                     ),
                   ),
                   Container(
-                      height: 100,
-                      width: 100,
-                      margin: const EdgeInsets.only(
-                        top: 10,
-                        left: 10,
+                    height: 100,
+                    width: 100,
+                    margin: const EdgeInsets.only(
+                      top: 10,
+                      left: 10,
+                    ),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.grey,
+                        width: 1,
                       ),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Colors.grey,
-                          width: 1,
-                        ),
-                      ),
-                      alignment: Alignment.center,
-                      child: imageUrlController.text.isEmpty
-                          ? const Text('Informe a Url')
-                          : FittedBox(
-                              fit: BoxFit.cover,
-                              child: Image.network(imageUrlController.text),
-                            ))
+                    ),
+                    alignment: Alignment.center,
+                    child: imageUrlController.text.isEmpty
+                        ? const Text('Informe a Url')
+                        : FittedBox(
+                            fit: BoxFit.cover,
+                            child: Image.network(imageUrlController.text),
+                          ),
+                  )
                 ],
               ),
             ],
