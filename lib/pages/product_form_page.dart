@@ -38,6 +38,15 @@ class _ProductFormPageState extends State<ProductFormPage> {
     setState(() {});
   }
 
+  bool isValidUrl(String url) {
+    bool isValidUrl = Uri.tryParse(url)?.hasAbsolutePath ?? false;
+    bool endsWithFile = url.toLowerCase().endsWith('png') ||
+        url.toLowerCase().endsWith('jpg') ||
+        url.toLowerCase().endsWith('jpeg');
+
+    return isValidUrl && endsWithFile;
+  }
+
   void submitForm() {
     final bool isValid = formKey.currentState?.validate() ?? false;
 
@@ -128,6 +137,15 @@ class _ProductFormPageState extends State<ProductFormPage> {
                       controller: imageUrlController,
                       onSaved: (imageUrl) =>
                           formData['imageUrl'] = imageUrl ?? '',
+                      validator: (_url) {
+                        final url = _url ?? '';
+
+                        if (!isValidUrl(url)) {
+                          return "Informe uma URL válida";
+                        } else {
+                          return null;
+                        }
+                      },
                     ),
                   ),
                   Container(
