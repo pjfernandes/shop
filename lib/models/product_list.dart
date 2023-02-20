@@ -33,8 +33,8 @@ class ProductList with ChangeNotifier {
     // Para que a tela atualize a lista de productos
   }
 
-  void removeProduct(Product product) {
-    _items.removeWhere((p) => product.id == p.id);
+  void removeProduct(String productId) {
+    _items.removeWhere((product) => product.id == productId);
     notifyListeners();
   }
 
