@@ -28,6 +28,26 @@ class _ProductFormPageState extends State<ProductFormPage> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    if (formData.isEmpty) {
+      final arg = ModalRoute.of(context)?.settings.arguments;
+
+      if (arg != null) {
+        final product = arg as Product;
+        formData['id'] = product.id;
+        formData['price'] = product.price;
+        formData['name'] = product.name;
+        formData['description'] = product.description;
+        formData['imageUrl'] = product.imageUrl;
+
+        imageUrlController.text = product.imageUrl;
+      }
+    }
+  }
+
+  @override
   void dispose() {
     super.dispose();
     priceFocus.dispose();
@@ -60,8 +80,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
     formKey.currentState?.save(); //faz a chamada dos campos onSaved
     //print(formData.values);
 
-    Provider.of<ProductList>(context, listen: false)
-        .addProductFromData(formData);
+    Provider.of<ProductList>(context, listen: false).saveProduct(formData);
 
     Navigator.of(context).pop();
   }
@@ -85,6 +104,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
           child: ListView(
             children: [
               TextFormField(
+                initialValue: formData['name']?.toString(),
                 decoration: InputDecoration(labelText: 'Nome'),
                 textInputAction: TextInputAction.next,
                 onFieldSubmitted: (_) {
@@ -106,6 +126,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
                 },
               ),
               TextFormField(
+                initialValue: formData['price']?.toString(),
                 decoration: InputDecoration(labelText: 'Preço'),
                 textInputAction: TextInputAction.next,
                 focusNode: priceFocus,
@@ -127,6 +148,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
                 },
               ),
               TextFormField(
+                initialValue: formData['description']?.toString(),
                 decoration: InputDecoration(labelText: 'Descrição'),
                 textInputAction: TextInputAction.next,
                 focusNode: descriptionFocus,

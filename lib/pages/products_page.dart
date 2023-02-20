@@ -17,14 +17,15 @@ class ProductsPage extends StatelessWidget {
         title: Text("Gerenciar Produtos"),
         actions: [
           IconButton(
-              onPressed: () {
-                Navigator.of(context).pushNamed(
-                  AppRoutes.PRODUCT_FORM,
-                );
-              },
-              icon: Icon(
-                Icons.add,
-              ))
+            onPressed: () {
+              Navigator.of(context).pushNamed(
+                AppRoutes.PRODUCT_FORM,
+              );
+            },
+            icon: Icon(
+              Icons.add,
+            ),
+          )
         ],
       ),
       drawer: AppDrawer(),

@@ -17,24 +17,6 @@ class ProductList with ChangeNotifier {
     return items.length;
   }
 
-  void saveProduct(Map<String, Object> data) {
-    bool hasId = data['id'] != null;
-
-    final product = Product(
-      id: hasId ? data['id'] as String : Random().nextDouble().toString(),
-      name: data['name'] as String,
-      description: data['description'] as String,
-      price: data['price'] as double,
-      imageUrl: data['imageUrl'] as String,
-    );
-
-    if (hasId) {
-      updateProduct(product);
-    } else {
-      addProduct(product);
-    }
-  }
-
   void updateProduct(Product product) {
     int index = _items.indexWhere((p) => p.id == product.id);
 
@@ -56,15 +38,22 @@ class ProductList with ChangeNotifier {
     notifyListeners();
   }
 
-  void addProductFromData(Map<String, Object> formData) {
-    final Product newProduct = Product(
-        id: Random().nextDouble().toString(),
-        name: formData['name'].toString(),
-        description: formData['description'].toString(),
-        price: formData['price'] as double,
-        imageUrl: formData['imageUrl'].toString());
+  void saveProduct(Map<String, Object> formData) {
+    bool hasId = formData['id'] != null;
 
-    addProduct(newProduct);
+    final Product product = Product(
+      id: hasId ? formData["id"].toString() : Random().nextDouble().toString(),
+      name: formData['name'].toString(),
+      description: formData['description'].toString(),
+      price: formData['price'] as double,
+      imageUrl: formData['imageUrl'].toString(),
+    );
+
+    if (hasId) {
+      updateProduct(product);
+    } else {
+      addProduct(product);
+    }
     notifyListeners();
   }
 }
