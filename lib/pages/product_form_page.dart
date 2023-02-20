@@ -39,6 +39,12 @@ class _ProductFormPageState extends State<ProductFormPage> {
   }
 
   void submitForm() {
+    final bool isValid = formKey.currentState?.validate() ?? false;
+
+    if (!isValid) {
+      return;
+    }
+
     formKey.currentState?.save(); //faz a chamada dos campos onSaved
     //print(formData.values);
 
@@ -75,6 +81,19 @@ class _ProductFormPageState extends State<ProductFormPage> {
                   FocusScope.of(context).requestFocus(priceFocus);
                 },
                 onSaved: (name) => formData['name'] = name ?? '',
+                validator: (_name) {
+                  final name = _name ?? '';
+
+                  if (name.trim().isEmpty) {
+                    return "Nomé é obrigatório";
+                  }
+
+                  if (name.trim().length < 3) {
+                    return "Nome precisa no mín. 3 letras";
+                  }
+
+                  return null;
+                },
               ),
               TextFormField(
                 decoration: InputDecoration(labelText: 'Preço'),
