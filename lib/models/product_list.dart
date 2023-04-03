@@ -22,6 +22,7 @@ class ProductList with ChangeNotifier {
   }
 
   Future<void> loadProducts() async {
+    items.clear();
     final response = await http.get(Uri.parse(baseUrl));
 
     if (response.body == 'null') return;
