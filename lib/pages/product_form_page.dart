@@ -71,7 +71,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
     return isValidUrl && endsWithFile;
   }
 
-  submitForm() {
+  Future<void> submitForm() async {
     final bool isValid = formKey.currentState?.validate() ?? false;
 
     if (!isValid) {
@@ -85,14 +85,16 @@ class _ProductFormPageState extends State<ProductFormPage> {
     formKey.currentState?.save(); //faz a chamada dos campos onSaved
     //print(formData.values);
 
-    Provider.of<ProductList>(context, listen: false)
-        .saveProduct(formData)
-        .catchError((error) {
-      return showDialog<void>(
+    try {
+      await Provider.of<ProductList>(context, listen: false)
+          .saveProduct(formData);
+      Navigator.of(context).pop();
+    } catch (error) {
+      await showDialog<void>(
         context: context,
         builder: (context) => AlertDialog(
-          title: Text("Ocorreu um error"),
-          content: Text(error.toString()),
+          title: const Text("Ocorreu um error"),
+          content: const Text("Ocorreu um erro no servidor"),
           actions: [
             TextButton(
               onPressed: (() => Navigator.of(context).pop()),
@@ -101,12 +103,11 @@ class _ProductFormPageState extends State<ProductFormPage> {
           ],
         ),
       );
-    }).then((value) {
+    } finally {
       setState(() {
         isLoading = false;
       });
-      Navigator.of(context).pop();
-    });
+    }
   }
 
   @override

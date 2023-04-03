@@ -21,6 +21,23 @@ class ProductList with ChangeNotifier {
     return items.length;
   }
 
+  Future<void> loadProducts() async {
+    final response = await http.get(Uri.parse(baseUrl));
+
+    Map<String, dynamic> data = jsonDecode(response.body);
+
+    data.forEach((productId, productData) {
+      items.add(Product(
+        id: productData['id'],
+        description: productData['description'],
+        name: productData['name'],
+        price: productData['price'],
+        imageUrl: productData['imageUrl'],
+        isFavorite: productData['isFavorite'],
+      ));
+    });
+  }
+
   Future<void> updateProduct(Product product) {
     int index = _items.indexWhere((p) => p.id == product.id);
 
@@ -31,8 +48,8 @@ class ProductList with ChangeNotifier {
     return Future.value();
   }
 
-  Future<void> addProduct(Product product) {
-    final future = http.post(
+  Future<void> addProduct(Product product) async {
+    final response = await http.post(
       Uri.parse("$baseUrl/products.json"),
       body: jsonEncode(
         {
@@ -45,23 +62,21 @@ class ProductList with ChangeNotifier {
       ),
     );
 
-    return future.then<void>((response) {
-      //print(jsonDecode(response.body));
-      final id = jsonDecode(response.body)['name'];
-      _items.add(
-        Product(
-          id: id,
-          name: product.name,
-          description: product.description,
-          price: product.price,
-          imageUrl: product.imageUrl,
-          isFavorite: product.isFavorite,
-        ),
-      );
-      notifyListeners(); //notifica os interessados ao atualizar a
-      //lista de produtos.
-      // Para que a tela atualize a lista de productos
-    });
+    final id = jsonDecode(response.body)['name'];
+    _items.add(
+      Product(
+        id: id,
+        name: product.name,
+        description: product.description,
+        price: product.price,
+        imageUrl: product.imageUrl,
+        isFavorite: product.isFavorite,
+      ),
+    );
+
+    notifyListeners(); //notifica os interessados ao atualizar a
+    //lista de produtos.
+    // Para que a tela atualize a lista de productos
   }
 
   void removeProduct(String productId) {
