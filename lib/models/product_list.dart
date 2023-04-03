@@ -1,11 +1,15 @@
+import 'dart:convert';
+
 import 'package:flutter/widgets.dart';
 import 'package:shop/data/dummy_data.dart';
+import 'package:http/http.dart' as http;
 
 import 'dart:math';
 
 import '../models/product.dart';
 
 class ProductList with ChangeNotifier {
+  final String baseUrl = "https://shop2-9f57b-default-rtdb.firebaseio.com";
   List<Product> _items = dummyProducts;
 
   List<Product> get items => [..._items];
@@ -17,20 +21,47 @@ class ProductList with ChangeNotifier {
     return items.length;
   }
 
-  void updateProduct(Product product) {
+  Future<void> updateProduct(Product product) {
     int index = _items.indexWhere((p) => p.id == product.id);
 
     if (index >= 0) {
       _items[index] = product;
       notifyListeners();
     }
+    return Future.value();
   }
 
-  void addProduct(Product product) {
-    _items.add(product);
-    notifyListeners(); //notifica os interessados ao atualizar a
-    //lista de produtos.
-    // Para que a tela atualize a lista de productos
+  Future<void> addProduct(Product product) {
+    final future = http.post(
+      Uri.parse("$baseUrl/products.json"),
+      body: jsonEncode(
+        {
+          "name": product.name,
+          "description": product.description,
+          "price": product.price,
+          "imageUrl": product.imageUrl,
+          "isFavorite": product.isFavorite,
+        },
+      ),
+    );
+
+    return future.then<void>((response) {
+      //print(jsonDecode(response.body));
+      final id = jsonDecode(response.body)['name'];
+      _items.add(
+        Product(
+          id: id,
+          name: product.name,
+          description: product.description,
+          price: product.price,
+          imageUrl: product.imageUrl,
+          isFavorite: product.isFavorite,
+        ),
+      );
+      notifyListeners(); //notifica os interessados ao atualizar a
+      //lista de produtos.
+      // Para que a tela atualize a lista de productos
+    });
   }
 
   void removeProduct(String productId) {
@@ -38,7 +69,7 @@ class ProductList with ChangeNotifier {
     notifyListeners();
   }
 
-  void saveProduct(Map<String, Object> formData) {
+  Future<void> saveProduct(Map<String, Object> formData) {
     bool hasId = formData['id'] != null;
 
     final Product product = Product(
@@ -50,11 +81,10 @@ class ProductList with ChangeNotifier {
     );
 
     if (hasId) {
-      updateProduct(product);
+      return updateProduct(product);
     } else {
-      addProduct(product);
+      return addProduct(product);
     }
-    notifyListeners();
   }
 }
 
