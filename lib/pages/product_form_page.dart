@@ -86,8 +86,11 @@ class _ProductFormPageState extends State<ProductFormPage> {
     //print(formData.values);
 
     try {
-      await Provider.of<ProductList>(context, listen: false)
-          .saveProduct(formData);
+      await Provider.of<ProductList>(
+        context,
+        listen: false,
+      ).saveProduct(formData);
+
       Navigator.of(context).pop();
     } catch (error) {
       await showDialog<void>(
@@ -104,9 +107,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
         ),
       );
     } finally {
-      setState(() {
-        isLoading = false;
-      });
+      setState(() => isLoading = false);
     }
   }
 

@@ -28,12 +28,15 @@ class _ProductsOverviewPageState extends State<ProductsOverviewPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     Provider.of<ProductList>(
       context,
       listen: false,
-    ).loadProducts().then((value) => setState((() => isLoading = false)));
+    ).loadProducts().then(
+          (value) => setState(
+            (() => isLoading = false),
+          ),
+        );
   }
 
   @override
@@ -70,7 +73,7 @@ class _ProductsOverviewPageState extends State<ProductsOverviewPage> {
             },
           ),
           Consumer<Cart>(
-            builder: (ctx, cart, child) => Badge(
+            builder: (ctx, cart, child) => Badge2(
               value: cart.itemsCount.toString(),
               color: null,
               child: IconButton(
