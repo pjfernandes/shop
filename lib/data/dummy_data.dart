@@ -1,6 +1,6 @@
-import '../models/product.dart';
+import 'package:shop/models/product.dart';
 
-final List<Product> dummyProducts = [
+final dummyProducts = [
   Product(
     id: 'p1',
     name: 'Red Shirt',
